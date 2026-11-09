@@ -1,0 +1,104 @@
+@model MaquinaRefrescos.Web.ViewModels.AdminViewModel
+@{
+    ViewData["Title"] = "Inventario y Monedero";
+    string? mensaje = TempData["MensajeAdmin"] as string;
+    int cant1 = Model.Monedero.FirstOrDefault(m => m.Denominacion == 1m)?.Cantidad ?? 0;
+    int cant2 = Model.Monedero.FirstOrDefault(m => m.Denominacion == 2m)?.Cantidad ?? 0;
+    int cant5 = Model.Monedero.FirstOrDefault(m => m.Denominacion == 5m)?.Cantidad ?? 0;
+    int cant10 = Model.Monedero.FirstOrDefault(m => m.Denominacion == 10m)?.Cantidad ?? 0;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Ajuste de Inventario y Monedero</h2>
+    <a asp-controller="Maquina" asp-action="Index" class="btn btn-outline-secondary btn-sm">Ir a la máquina</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @mensaje
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header fw-bold">Existencia de Productos</div>
+            <div class="card-body p-0">
+                <table class="table mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Existencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Productos)
+                        {
+                            <tr>
+                                <td>@p.Nombre</td>
+                                <td>$@p.Precio.ToString("0.00")</td>
+                                <td>
+                                    <form asp-action="ActualizarExistencia" method="post" class="d-flex gap-2">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productoId" value="@p.Id" />
+                                        <input type="number" name="existencia" value="@p.Existencia" min="0" max="999" class="form-control form-control-sm" style="width: 90px;" />
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Guardar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header fw-bold">Monedero (cambio disponible)</div>
+            <div class="card-body">
+                <form asp-action="ActualizarMonedero" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Monedas de $1</label>
+                            <input type="number" name="cant1" value="@cant1" min="0" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Monedas de $2</label>
+                            <input type="number" name="cant2" value="@cant2" min="0" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Monedas de $5</label>
+                            <input type="number" name="cant5" value="@cant5" min="0" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Monedas de $10</label>
+                            <input type="number" name="cant10" value="@cant10" min="0" class="form-control" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Guardar monedero</button>
+                </form>
+
+                <hr />
+                <div class="d-flex gap-2">
+                    <form asp-action="VaciarMonedero" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-warning btn-sm">
+                            Dejar monedero en 0 (probar sin cambio)
+                        </button>
+                    </form>
+                    <form asp-action="RestaurarMonedero" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                            Restaurar (5 de cada una)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

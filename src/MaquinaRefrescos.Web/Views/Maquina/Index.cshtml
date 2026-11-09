@@ -1,0 +1,154 @@
+@model MaquinaRefrescos.Web.ViewModels.MaquinaViewModel
+@{
+    ViewData["Title"] = "Expendedora";
+    string? tipoAlerta = TempData["TipoAlerta"] as string;
+    string? mensajeAlerta = TempData["MensajeAlerta"] as string;
+}
+
+<h2 class="mb-3">Máquina Expendedora de Refrescos</h2>
+
+@if (!string.IsNullOrWhiteSpace(mensajeAlerta))
+{
+    <div class="alert alert-@(tipoAlerta ?? "info") alert-dismissible fade show" role="alert">
+        @mensajeAlerta
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header fw-bold">
+                1. Productos disponibles
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-end">Precio</th>
+                            <th class="text-center">Existencia</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Productos)
+                        {
+                            bool esSeleccionado = Model.ProductoSeleccionado?.Id == p.Id;
+                            <tr class="@(esSeleccionado ? "table-primary" : "")">
+                                <td>
+                                    <strong>@p.Nombre</strong>
+                                    @if (esSeleccionado)
+                                    {
+                                        <span class="badge bg-primary ms-1">Seleccionado</span>
+                                    }
+                                </td>
+                                <td class="text-end">$@p.Precio.ToString("0.00")</td>
+                                <td class="text-center">
+                                    @if (p.Existencia > 0)
+                                    {
+                                        <span class="badge bg-success">@p.Existencia disp.</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Agotado (0)</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <form asp-action="Seleccionar" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productoId" value="@p.Id" />
+                                        <button type="submit" class="btn btn-sm @(esSeleccionado ? "btn-primary" : "btn-outline-primary")">
+                                            @(esSeleccionado ? "Seleccionado" : "Seleccionar")
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card mb-3">
+            <div class="card-header fw-bold">
+                2. Ingresar monedas
+            </div>
+            <div class="card-body">
+                <p class="small text-muted mb-2">Monedas permitidas ($1, $2, $5 y $10):</p>
+                <div class="d-flex gap-2 flex-wrap mb-3">
+                    @foreach (decimal denom in Model.DenominacionesPermitidas)
+                    {
+                        <form asp-action="InsertarMoneda" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="valor" value="@denom" />
+                            <button type="submit" class="btn btn-outline-dark px-3">
+                                + $@denom.ToString("0.##")
+                            </button>
+                        </form>
+                    }
+                </div>
+
+                <hr />
+
+                <div class="mb-2">
+                    <strong>Producto seleccionado:</strong>
+                    @if (Model.ProductoSeleccionado is not null)
+                    {
+                        <span>@Model.ProductoSeleccionado.Nombre ($@Model.ProductoSeleccionado.Precio.ToString("0.00"))</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Ninguno</span>
+                    }
+                </div>
+
+                <div class="mb-2">
+                    <strong>Total acumulado:</strong>
+                    <span class="fs-5 fw-bold text-success">$@Model.TotalIngresado.ToString("0.00")</span>
+                </div>
+
+                @if (Model.MonedasIngresadas.Count > 0)
+                {
+                    <div class="mb-2 small text-muted">
+                        Monedas ingresadas:
+                        @string.Join(", ", Model.MonedasIngresadas.Select(m => $"${m:0.##}"))
+                    </div>
+                }
+
+                @if (Model.ProductoSeleccionado is not null && Model.MontoFaltante > 0)
+                {
+                    <div class="alert alert-warning py-2 mt-2 mb-2">
+                        <strong>Monto faltante:</strong> $@Model.MontoFaltante.ToString("0.00")
+                    </div>
+                }
+                else if (Model.ProductoSeleccionado is not null && Model.TotalIngresado >= Model.ProductoSeleccionado.Precio)
+                {
+                    decimal cambioEstimado = Model.TotalIngresado - Model.ProductoSeleccionado.Precio;
+                    <div class="alert alert-info py-2 mt-2 mb-2">
+                        <strong>Cambio a entregar:</strong> $@cambioEstimado.ToString("0.00")
+                        <div class="small">Presiona "Confirmar compra" para finalizar.</div>
+                    </div>
+                }
+
+                <div class="d-flex gap-2 mt-3">
+                    <form asp-action="Comprar" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success">
+                            Confirmar compra
+                        </button>
+                    </form>
+
+                    <form asp-action="Cancelar" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-danger">
+                            Cancelar / Devolver monedas
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+@model IReadOnlyList<MaquinaRefrescos.Core.Entities.Venta>
+@{
+    ViewData["Title"] = "Historial de ventas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Historial de Ventas</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Volver a la máquina</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-secondary">
+        Aún no hay ventas registradas.
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th class="text-end">Precio</th>
+                        <th class="text-end">Pagado</th>
+                        <th class="text-end">Cambio</th>
+                        <th>Monedas ingresadas</th>
+                        <th>Monedas de cambio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var v in Model)
+                    {
+                        <tr>
+                            <td>@v.Id</td>
+                            <td>@v.Fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@(v.Producto?.Nombre ?? $"ID {v.ProductoId}")</td>
+                            <td class="text-end">$@v.Precio.ToString("0.00")</td>
+                            <td class="text-end">$@v.MontoIngresado.ToString("0.00")</td>
+                            <td class="text-end">$@v.Cambio.ToString("0.00")</td>
+                            <td>@v.MonedasIngresadas</td>
+                            <td>@(string.IsNullOrWhiteSpace(v.MonedasCambio) ? "Sin cambio" : v.MonedasCambio)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

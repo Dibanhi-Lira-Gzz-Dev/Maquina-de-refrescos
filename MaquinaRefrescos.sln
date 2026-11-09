@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B53FCBB5-39B6-4235-AEBD-9C029DC33318}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaquinaRefrescos.Core", "src\MaquinaRefrescos.Core\MaquinaRefrescos.Core.csproj", "{42078529-7E0F-4DCA-9272-2447533AB820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaquinaRefrescos.Infrastructure", "src\MaquinaRefrescos.Infrastructure\MaquinaRefrescos.Infrastructure.csproj", "{BB61BEBE-2747-4A77-A808-AA43661D1806}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaquinaRefrescos.Web", "src\MaquinaRefrescos.Web\MaquinaRefrescos.Web.csproj", "{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D84A9062-9A9B-4017-BD64-00238851C0D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaquinaRefrescos.Tests", "tests\MaquinaRefrescos.Tests\MaquinaRefrescos.Tests.csproj", "{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42078529-7E0F-4DCA-9272-2447533AB820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42078529-7E0F-4DCA-9272-2447533AB820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42078529-7E0F-4DCA-9272-2447533AB820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42078529-7E0F-4DCA-9272-2447533AB820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB61BEBE-2747-4A77-A808-AA43661D1806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB61BEBE-2747-4A77-A808-AA43661D1806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB61BEBE-2747-4A77-A808-AA43661D1806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB61BEBE-2747-4A77-A808-AA43661D1806}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42078529-7E0F-4DCA-9272-2447533AB820} = {B53FCBB5-39B6-4235-AEBD-9C029DC33318}
+		{BB61BEBE-2747-4A77-A808-AA43661D1806} = {B53FCBB5-39B6-4235-AEBD-9C029DC33318}
+		{8A9065DA-11E9-44DC-BE66-15D4E6BE98C9} = {B53FCBB5-39B6-4235-AEBD-9C029DC33318}
+		{A518ABC2-BAD7-4618-9C2F-F5BD5122AFE3} = {D84A9062-9A9B-4017-BD64-00238851C0D3}
+	EndGlobalSection
+EndGlobal
